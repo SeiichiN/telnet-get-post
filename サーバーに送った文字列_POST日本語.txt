@@ -1,0 +1,6 @@
+POST /post_receive.php HTTP/1.1
+Host: 192.168.1.17
+Content-Length:32
+Content-Type: application/x-www-form-urlencoded
+
+name=%E6%A1%83%E5%A4%AA%E9%83%8E

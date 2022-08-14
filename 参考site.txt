@@ -1,0 +1,3 @@
+[Linux] コマンドラインでHTTP通信を行う – Telnet編
+https://blog.katsubemakito.net/linux/http-cli-telnet
+
