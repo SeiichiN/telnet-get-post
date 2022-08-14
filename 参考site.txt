@@ -1,3 +1,6 @@
 [Linux] コマンドラインでHTTP通信を行う – Telnet編
 https://blog.katsubemakito.net/linux/http-cli-telnet
 
+HTTP語でWebブラウザとしゃべってみよう
+https://atmarkit.itmedia.co.jp/ait/articles/0303/15/news003.html
+
