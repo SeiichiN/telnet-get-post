@@ -1,7 +1,7 @@
 <?php
 $name = $_GET['name'];
 if ($name === null || $name === '') {
-  $name = '名無しの権兵衛';
+  $name = 'BATMAN';
 }
 ?>
 <!doctype html>
@@ -12,8 +12,8 @@ if ($name === null || $name === '') {
     <title>get_receive</title>
   </head>
   <body>
-    <h1>getを取得</h1>
-    <p>name は <?php echo $name; ?></p>
+    <h1>get receive</h1>
+    <p>name is <?php echo $name; ?></p>
     <script>
     'use strict';
 
@@ -21,4 +21,4 @@ if ($name === null || $name === '') {
   </body>
 </html>
 
-<!-- 修正時刻: Sun 2022/08/14 22:48:50 -->
+<!-- 修正時刻: Mon 2022/08/15 13:25:35 -->

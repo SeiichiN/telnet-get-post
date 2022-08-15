@@ -1,7 +1,7 @@
 <?php
 $name = $_POST['name'];
 if ($name === null || $name === '') {
-  $name = '名無しの権兵衛';
+  $name = 'Sky Walker';
 }
 ?>
 <!doctype html>
@@ -9,11 +9,11 @@ if ($name === null || $name === '') {
   <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <title>get_receive</title>
+    <title>post_receive</title>
   </head>
   <body>
-    <h1>getを取得</h1>
-    <p>name は <?php echo $name; ?></p>
+    <h1>post receive</h1>
+    <p>name is <?php echo $name; ?></p>
     <script>
     'use strict';
 
@@ -21,4 +21,4 @@ if ($name === null || $name === '') {
   </body>
 </html>
 
-<!-- 修正時刻: Sun 2022/08/14 23:07:02 -->
+<!-- 修正時刻: Mon 2022/08/15 13:25:35 -->
