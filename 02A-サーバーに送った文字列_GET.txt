@@ -1,5 +1,5 @@
 GET /get_receive.php?name=%E6%A1%83%E5%A4%AA%E9%83%8E HTTP/1.1
-Host: 192.168.1.17
+Host: 192.168.31.27
 
 
 
