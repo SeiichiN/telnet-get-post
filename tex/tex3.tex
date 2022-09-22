@@ -1,0 +1,107 @@
+\documentclass[uplatex, dvipdfmx]{jsarticle}
+
+\include{begin}
+
+\section{POSTリクエスト}
+
+\subsection{英字の場合}
+
+POSTリクエストの場合、送信すべき文字列はボディ部の中に書く。
+そして、何バイトなのかをヘッダ部に書く。
+以下のようになる。
+
+\begin{lstlisting}[numbers=none]
+POST /post_receive.php HTTP/1.1
+Host: 192.168.31.27
+Content-Length:13
+Content-Type: application/x-www-form-urlencoded
+
+name=momotaro
+\end{lstlisting}
+
+今度は、ドキュメントルートの ``post\_receive.php''を指定している。
+ ``name=momotaro''という文字列を送信している。13バイトである。
+
+それと、フォームで送信するので、Content-Type: に
+\verb!application/x-www-form-urlencoded! という記述が必要になる。
+
+このようにフォームでは、ボディ部に送信文字列を記述しているのである。
+
+これに対するレスポンスは以下である。
+
+\begin{lstlisting}
+HTTP/1.1 200 OK
+Date: Sat, 10 Sep 2022 07:21:36 GMT
+Server: Apache/2.4.54 (Debian)
+X-Powered-By: PHP/7.4.30
+Vary: Accept-Encoding
+Content-Length: 360
+Content-Type: text/html; charset=UTF-8
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>post_receive</title>
+  </head>
+  <body>
+    <h1>post receive</h1>
+    <p>name is momotaro</p>
+    <script>
+    'use strict';
+
+    </script>
+  </body>
+</html>
+\end{lstlisting}
+
+
+\subsection{日本語文字列の場合}
+
+日本語文字列の場合は、やはり URLエンコードをする。
+以下は、桃太郎をURLエンコードして送信している。
+
+\begin{lstlisting}
+POST /post_receive.php HTTP/1.1
+Host: 192.168.31.27
+Content-Length:32
+Content-Type: application/x-www-form-urlencoded
+
+name=%E6%A1%83%E5%A4%AA%E9%83%8E
+\end{lstlisting}
+
+以下がそのレスポンスである。y
+
+\begin{lstlisting}
+HTTP/1.1 200 OK
+Date: Sat, 10 Sep 2022 07:27:23 GMT
+Server: Apache/2.4.54 (Debian)
+X-Powered-By: PHP/7.4.30
+Vary: Accept-Encoding
+Content-Length: 361
+Content-Type: text/html; charset=UTF-8
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>post_receive</title>
+  </head>
+  <body>
+    <h1>post receive</h1>
+    <p>name is 桃太郎</p>
+    <script>
+    'use strict';
+
+    </script>
+  </body>
+</html>
+\end{lstlisting}
+
+
+
+\include{end}
+
+%% 修正時刻： Sat 2022/09/10 12:12:430

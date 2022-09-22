@@ -1,0 +1,165 @@
+\documentclass[uplatex, dvipdfmx]{jsarticle}
+
+\include{begin}
+
+\section{準備}
+
+\subsection{サーバー側}
+
+以下のファイルをサーバー側ドキュメントルートに置く。
+
+\begin{itemize}
+ \item get\_receive.php \\
+       \hspace{12mm} GET通信用
+ \item index.php \\
+       \hspace{12mm} サーバーに接続したことがわかるようにする。
+ \item post\_receive.php \\
+       \hspace{12mm} POST通信用
+ \item sample.html \\
+       \hspace{12mm} ダウンロード用ファイル
+ \item c.png \\
+       \hspace{12mm} 画像ダウンロード用
+ \item choki.png \\
+       \hspace{12mm} 画像ダウンロード用
+ \item favicon.ico \\
+       \hspace{12mm} なくてもかまわない。
+\end{itemize}
+
+以下、サーバーのIPアドレスを ``192.168.31.27'' とする。
+ポート番号を 8080 とする。
+
+\subsection{クライアント側}
+
+Windows版 telnet.exe を ``c:\yen Windows\yen system32'' に用意する。
+telnet をダウンロードすれば、ここにインストールされる。
+
+\section{普通のGETリクエスト}
+
+コマンドプロンプトにて、以下のコマンドを入力する。
+
+\begin{lstlisting}[numbers=none]
+ > telnet 192.168.31.27 8080
+\end{lstlisting}
+
+すると、コマンドプロンプト画面には何も表示されなくなる。
+これは、サーバーに接続しているのである。
+これ以降、ここで入力した文字はすべてサーバーに送られるため
+画面では見えなくなる。
+
+したがって、TeraPad などのエディタで文字列を用意しておき、
+それをこの画面に貼り付けるとよい。
+
+また、貼り付けるのも、\fbox{Ctrl + v} は効かない。
+Ctrlキーも、vキーも、すべてサーバーに送られるからである。
+コマンドプロンプトの左上のアイコンのメニューの''編集'' ---
+``貼り付け'' を使う。
+
+エディタで以下の文字列を用意する。
+
+\begin{lstlisting}[numbers=none]
+GET /sample.html HTTP/1.1
+Host: 192.168.31.27 
+\end{lstlisting}
+
+これを貼り付ける。そして、``Enter''キーを1回、あるいは、もう1回
+押下する。
+``空行''が終わりの印である。
+
+これは''ヘッダ部''で、GET通信では ヘッダ部だけを送ることに
+なっている。ここでは、ドキュメントルートにある sample.html ファイル
+を要求している。また、HTTP/1.1 プロトコルでの通信を求めている。
+
+すると、以下のような文字列が送られてくるはずである。
+
+\begin{lstlisting}[numbers=none]
+HTTP/1.1 200 OK
+Date: Sun, 14 Aug 2022 13:44:15 GMT
+Server: Apache/2.4.54 (Debian)
+Last-Modified: Sun, 14 Aug 2022 13:43:12 GMT
+ETag: "210-5e633b24c11af"
+Accept-Ranges: bytes
+Content-Length: 528
+Vary: Accept-Encoding
+Content-Type: text/html
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>sample</title>
+  </head>
+  <body>
+    <h1>サンプル</h1>
+    <p>これは、サンプルのhtmlです。</p>
+    <div id="btn">クリックしてね</div>
+    <script>
+    'use strict';
+
+     document.getElementById('btn').onclick = function() {
+       alert('クリックしたね')
+     }
+    </script>
+  </body>
+</html>
+\end{lstlisting}
+
+これは、動作しているサーバーによって多少の違いがあるかもしれない。
+途中の空行より上が''ヘッダ部''で、空行より下が''ボディ部''である。
+
+ヘッダ部の先頭が''ステータス行''で、クライアントからの要求に
+対する返答である。ここでは、``HTTP/1.1'' ぷろとこるでの通信要求と、
+``sample.html''のダウンロード要求に対して ``OK''を返答している。
+
+ヘッダ部の一番下に ``Content-Type: text/html'' とあるが、
+空行の後に送る文字列のタイプをクライアントのブラウザに伝えている。
+
+空行の後が、ボディ部で、これがダウンロードされて、ブラウザにて
+描画(レンダリング)される。
+
+もし、HTML文の中に \verb!<img src="choki.png">!タグがあれば、
+その画像がブラウザによって
+サーバーに 以下のようにGETリクエストされる。
+
+\begin{lstlisting}
+GET /choki.png HTTP/1.1
+Host: 192.168.1.17
+
+\end{lstlisting}
+
+これは、以下のようにレスポンスされる。
+
+\begin{lstlisting}[numbers=none]
+HTTP/1.1 200 OK
+Date: Sat, 10 Sep 2022 04:02:59 GMT
+Server: Apache/2.4.54 (Debian)
+Last-Modified: Thu, 18 Aug 2022 21:43:44 GMT
+ETag: "5f26-5e68ae025c400"
+Accept-Ranges: bytes
+Content-Length: 24358
+Content-Type: image/png
+
+�PNG
+�
+IHDR  �$	pHYs
+
+                    ��
+MiCCPPhotoshop ICC profilexڝSwX��>��eVB��l
+
+... (以下、略) ...
+
+\end{lstlisting}
+
+ヘッダ部の最下行は以下のようになっている。
+
+\fbox{ Content-Type: image/png }
+
+画像として png画像を送ることをブラウザに伝えている。
+空行のあとに送られているのが、画像データである。
+
+
+
+
+\include{end}
+
+%% 修正時刻： Sat 2022/09/10 12:12:430

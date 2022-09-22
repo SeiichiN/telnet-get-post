@@ -1,0 +1,114 @@
+\documentclass[uplatex, dvipdfmx]{jsarticle}
+
+\include{begin}
+
+\section{GETリクエスト(クエリ文字列)}
+
+\subsection{英字の場合}
+
+GETリクエストでクエリ文字列を送ることができる。
+
+\fbox{ telnet 192.168.31.27 8080 } としたあとの画面で
+以下を入力する。
+
+\begin{lstlisting}
+GET /get_receive.php?name=Taro HTTP/1.1
+Host: 192.168.31.27
+\end{lstlisting}
+
+これは、サーバーのドキュメントルートにある get\_receive.php
+をダウンロード要求している。そして、そのファイルに対して
+\fbox{ name=Taro }という文字列を渡している。
+
+サーバー側では、まず get\_receive.php が PHPプログラムとして
+動作し、nameという名前で ``Taro'' という文字列を受け取る。
+その後、PHPはHTML文字列を生成し、それをクライアントに返す。
+
+以下のようなレスポンスとなる。
+
+\begin{lstlisting}
+HTTP/1.1 200 OK
+Date: Sat, 10 Sep 2022 04:25:43 GMT
+Server: Apache/2.4.54 (Debian)
+X-Powered-By: PHP/7.4.30
+Vary: Accept-Encoding
+Content-Length: 354
+Content-Type: text/html; charset=UTF-8
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>get_receive</title>
+  </head>
+  <body>
+    <h1>get receive</h1>
+    <p>name is Taro</p>
+    <script>
+    'use strict';
+
+    </script>
+  </body>
+</html>
+\end{lstlisting}
+
+クライアントによって送られた ``name=Taro'' は、
+\verb!<p>name is Taro</p>! というHTML文字列となって埋め込まれている。
+
+\subsection{日本語文字列を送る場合}
+
+GETリクエストにおいて、日本語文字列をクエリ文字列として送る場合は、
+``URLエンコード''しなくてはならない。
+
+たとえば、以下のサイトで URLエンコード できる。
+
+\href{https://tech-unlimited.com/urlencode.html}{URLエンコード・デコード}
+
+``桃太郎'' をURLエンコードすると、``\verb!%E6%A1%83%E5%A4%AA%E9%83%8E!''
+となる。これを以下のように GETリクエストする。
+
+\begin{lstlisting}[numbers=none]
+GET /get_receive.php?name=%E6%A1%83%E5%A4%AA%E9%83%8E HTTP/1.1
+Host: 192.168.31.27
+ 
+\end{lstlisting}
+
+以下のようなレスポンスが返ってくる。
+
+\begin{lstlisting}
+HTTP/1.1 200 OK
+Date: Sun, 14 Aug 2022 14:02:37 GMT
+Server: Apache/2.4.54 (Debian)
+X-Powered-By: PHP/7.4.30
+Vary: Accept-Encoding
+Content-Length: 359
+Content-Type: text/html; charset=UTF-8
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>get_receive</title>
+  </head>
+  <body>
+    <h1>get receive</h1>
+    <p>name is 桃太郎taro</p>
+    <script>
+    'use strict';
+
+    </script>
+  </body>
+</html> 
+\end{lstlisting}
+\include{end}
+
+
+実際は、ブラウザにて、日本語文字列をユーザーがいちいち
+URLエンコードしなくてもいいように、ブラウザがURLエンコードして
+サーバーにGETリクエストしてくれている。
+
+
+
+%% 修正時刻： Sat 2022/09/10 12:12:430
